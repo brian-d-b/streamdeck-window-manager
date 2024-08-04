@@ -51,10 +51,6 @@ def handle_priority_windows(priority_patterns, exclude_patterns, action):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Manage and prioritize specific windows.')
-    parser.add_argument('--toggl', choices=['activate', 'minimize'], help='Activate or minimize Toggl Track')
-    parser.add_argument('--togglplan', choices=['activate', 'minimize'], help='Activate or minimize Toggl Plan')
-    parser.add_argument('--tasks', choices=['activate', 'minimize'], help='Activate or minimize Google Calendar Tasks')
-    parser.add_argument('--calendar', choices=['activate', 'minimize'], help='Activate or minimize Google Calendar views')
     parser.add_argument('--chatgpt', choices=['activate', 'minimize'], help='Activate or minimize ChatGPT')
     parser.add_argument('--emulator', choices=['activate', 'minimize'], help='Activate or minimize Android Emulator')
     parser.add_argument('--cytracom', choices=['activate', 'minimize'], help='Activate or minimize Cytracom')
@@ -62,38 +58,17 @@ if __name__ == "__main__":
     parser.add_argument('--outlook', choices=['activate', 'minimize'], help='Activate or minimize Outlook')
     parser.add_argument('--onenote', choices=['activate', 'minimize'], help='Activate or minimize OneNote')
     parser.add_argument('--vscode', choices=['activate', 'minimize'], help='Activate or minimize Visual Studio Code')
+    parser.add_argument('--calendar', choices=['activate', 'minimize'], help='Activate or minimize Calendar')
+    parser.add_argument('--planner', choices=['activate', 'minimize'], help='Activate or minimize Planner')
+    parser.add_argument('--todo', choices=['activate', 'minimize'], help='Activate or minimize Microsoft To Do')
+    parser.add_argument('--powershell', choices=['activate', 'minimize'], help='Activate or minimize PowerShell')
+    parser.add_argument('--toggl', choices=['activate', 'minimize'], help='Activate or minimize Toggl')
     args = parser.parse_args()
 
     # Define the priority patterns and exclusion patterns based on the arguments
     priority_patterns = []
     exclude_patterns = []
 
-    if args.toggl:
-        priority_patterns.append(r"Toggl Track")
-        priority_patterns.extend([
-            r"Personal - Myself",
-            r"Work - Myself",
-            r"Work - FamilyBusiness",
-            r"Work - Job"
-        ])
-        handle_priority_windows(priority_patterns, exclude_patterns, args.toggl)
-    if args.togglplan:
-        priority_patterns.append(r"Toggl Plan - Google Chrome")
-        handle_priority_windows(priority_patterns, exclude_patterns, args.togglplan)
-    if args.tasks:
-        priority_patterns.append(r"Google Calendar - Tasks - Google Chrome")
-        handle_priority_windows(priority_patterns, exclude_patterns, args.tasks)
-    if args.calendar:
-        exclude_patterns.append(r"Google Calendar - Tasks - Google Chrome")
-        priority_patterns.extend([
-            r"Google Calendar - [A-Za-z]+",  # Matches day-based titles (e.g., Sunday, Monday, etc.)
-            r"Google Calendar - 4 days",
-            r"Google Calendar - Week",
-            r"Google Calendar - Month",
-            r"Google Calendar - Year",
-            r"Google Calendar - Schedule"
-        ])
-        handle_priority_windows(priority_patterns, exclude_patterns, args.calendar)
     if args.chatgpt:
         priority_patterns.append(r"ChatGPT — Mozilla Firefox")
         handle_priority_windows(priority_patterns, exclude_patterns, args.chatgpt)
@@ -108,6 +83,7 @@ if __name__ == "__main__":
         handle_priority_windows(priority_patterns, exclude_patterns, args.notepad)
     if args.outlook:
         priority_patterns.append(r"Outlook")
+        exclude_patterns.append(r"Calendar")
         handle_priority_windows(priority_patterns, exclude_patterns, args.outlook)
     if args.onenote:
         priority_patterns.append(r"OneNote")
@@ -115,6 +91,21 @@ if __name__ == "__main__":
     if args.vscode:
         priority_patterns.append(r"Visual Studio Code")
         handle_priority_windows(priority_patterns, exclude_patterns, args.vscode)
+    if args.calendar:
+        priority_patterns.append(r".*Calendar.*Outlook")
+        handle_priority_windows(priority_patterns, exclude_patterns, args.calendar)
+    if args.planner:
+        priority_patterns.append(r"Planner - Google Chrome")
+        handle_priority_windows(priority_patterns, exclude_patterns, args.planner)
+    if args.todo:
+        priority_patterns.append(r"Microsoft To Do")
+        handle_priority_windows(priority_patterns, exclude_patterns, args.todo)
+    if args.powershell:
+        priority_patterns.append(r"\d+: Administrator: Windows PowerShell")
+        handle_priority_windows(priority_patterns, exclude_patterns, args.powershell)
+    if args.toggl:
+        priority_patterns.append(r"(work • XceedIT / Work • Work - XceedIT|Personal - Myself|Work - Myself|Primrose - Work|Work - XceedIT|Toggl Track)")
+        handle_priority_windows(priority_patterns, exclude_patterns, args.toggl)
 
     # If no arguments are provided, list windows and allow selection
     if not any(vars(args).values()):
