@@ -9,4 +9,4 @@ This repo allows me to control my many windows / tabs via my Stream Deck
 ![image](https://github.com/user-attachments/assets/13cdc4fa-b52d-4db4-93fd-e2b7488a8e9a)
 
 
-Now I can easily overlap apps / windows without going crazy. Easily maanged.
+Now I can easily overlap apps / windows without going crazy. Easily managed.
